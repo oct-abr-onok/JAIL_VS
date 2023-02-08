@@ -141,10 +141,12 @@
   <ItemGroup>
     <ClCompile Include="jail.cpp" />
     <ClCompile Include="StrategyFactory.cpp" />
+    <ClCompile Include="unit_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="jail.hpp" />
     <ClInclude Include="StrategyFactory.hpp" />
+    <ClInclude Include="unit_tests.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="example_matrix.txt" />

@@ -14,7 +14,7 @@ private:
 
 public:
     int points_cnt(void);
-    int choice(void);
+    virtual int choice(void);
     void add_points(int cnt);
 };
 
@@ -37,7 +37,7 @@ class Triv3 : public Strategy
 class StrategyFactory
 {
 public:
-    Strategy *create() const;
+    virtual Strategy *create() const;
 };
 
 class Triv1Factory : public StrategyFactory
