@@ -112,9 +112,10 @@ int main(int argc, char* argv[])
 	// работа с аргументами коммандной строки
 	// jail.exe -mode=detailed --matrix=example_matrix.txt
 	// jail.exe -mode=fast --steps=10
-	int mode = 0; // 0 - detailed, 1 - fast, 2 - tournament
+	int mode = -1; // 0 - detailed, 1 - fast, 2 - tournament
 	std::string matrix_file_name = "default_matrix.txt";
 	int steps = -1;
+	std::vector<std::string> strat_names;
 
 	//парсер
 	for (int i = 1; i < argc; i++)
@@ -137,40 +138,75 @@ int main(int argc, char* argv[])
 			{
 				mode = 2;
 			}
+			continue;
 		}
 		command = str.substr(0, 8);
 		if (command == "--steps=")
 		{
 			steps = stoi(str.substr(8, std::string::npos));
+			continue;
 		}
 		command = str.substr(0, 9);
 		if (command == "--matrix=")
 		{
 			matrix_file_name = str.substr(9, std::string::npos);
+			continue;
 		}
+		strat_names.insert(strat_names.end(), 1, command);
+	}
+	if (strat_names.size() > 3 && mode == -1)
+	{
+		mode = 2;
+	}
+	else if (mode == -1)
+	{
+		mode = 0;
 	}
 
 	read_matrix(matrix, matrix_file_name);
 
-	// соревнование с детализацией
-	StrategyFactory* SF1 = new Triv1Factory;
-	StrategyFactory* SF2 = new Triv2Factory;
-	StrategyFactory* SF3 = new Triv3Factory;
+	std::vector<StrategyFactory*> s_factories;
+	for (int i = 0; i < strat_names.size(); i++)
+	{
+		if (strat_names[i] == "s1")
+			s_factories.push_back(new Triv1Factory);
+		else if (strat_names[i] == "s2")
+			s_factories.push_back(new Triv2Factory);
+		else if (strat_names[i] == "s3")
+			s_factories.push_back(new Triv3Factory);
+	}
 
 	switch (mode)
 	{
 	default:
-		competition(matrix, SF1, SF2, SF3, 1, steps);
+		if (strat_names.size() != 3)
+		{
+			std::cout << "Can't play detailed mode with number of strategies different from 3!" << std::endl;
+			break;
+		}
+		competition(matrix, s_factories[0], s_factories[1], s_factories[2], 1, steps);
 		break;
 
 	case 1:
+		if (strat_names.size() != 3)
+		{
+			std::cout << "Can't play fast mode with number of strategies different from 3!" << std::endl;
+			break;
+		}
 		if (steps == -1)
-			std::cout << "can't play fast competition without steps amount" << std::endl;
+		{
+			std::cout << "Can't play fast competition without steps amount!" << std::endl;
+			break;
+		}
 		else
-			competition(matrix, SF1, SF2, SF3, 0, steps);
+			competition(matrix, s_factories[0], s_factories[1], s_factories[2], 0, steps);
 		break;
 
 	case 2:
+		if (strat_names.size() < 3)
+		{
+			std::cout << "Can't play tournament mode with number of strategies less than 3!" << std::endl;
+		}
 		break;
 	}
 
