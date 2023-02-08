@@ -88,6 +88,22 @@ void competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, S
 	std::cout << "Results: p1 - " << S1->points_cnt() << " p2 - " << S2->points_cnt() << " p3 - " << S3->points_cnt() << std::endl;
 }
 
+void tournament(matrix*** matrix, std::vector<StrategyFactory*> s_factories, int steps)
+{
+	for (int i = 0; i < s_factories.size(); i++)
+	{
+		for (int j = i + 1; j < s_factories.size(); j++)
+		{
+			for (int k = j + 1; k < s_factories.size(); k++)
+			{
+				std::cout << "" << std::endl;
+				competition(matrix, s_factories[i], s_factories[j], s_factories[k], 0, steps);
+			}
+		}
+	}
+	std::cout << "Final res:" << std::endl;
+}
+
 int main(int argc, char* argv[])
 {
 
@@ -207,9 +223,16 @@ int main(int argc, char* argv[])
 		{
 			std::cout << "Can't play tournament mode with number of strategies less than 3!" << std::endl;
 		}
+		if (steps == -1)
+		{
+			std::cout << "Can't play tournament without steps amount!" << std::endl;
+			break;
+		}
 		break;
 	}
 
+	Strategy* s = s_factories[0]->create();
+	std::cout << s->say_name() << std::endl;
 
 
 	return 0;

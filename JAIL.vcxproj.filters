@@ -40,5 +40,8 @@
     <Text Include="example_matrix.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="default_matrix.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

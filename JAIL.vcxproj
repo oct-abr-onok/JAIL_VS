@@ -149,6 +149,7 @@
     <ClInclude Include="unit_tests.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="default_matrix.txt" />
     <Text Include="example_matrix.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

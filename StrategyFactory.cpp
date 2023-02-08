@@ -6,6 +6,13 @@ int Strategy::points_cnt(void)
     return points;
 }
 
+std::string& Strategy::say_name(void)
+{
+    std::string name = "ja";
+    std::string& s_name = name;
+    return s_name;
+}
+
 void Strategy::add_points(int cnt)
 {
     points += cnt;
@@ -14,6 +21,24 @@ void Strategy::add_points(int cnt)
 int Strategy::choice(void)
 {
     return 1;
+}
+
+std::string& Triv1::say_name(void) //сделать через темплейт для всех стратегий
+{
+    std::string& s_name = name;
+    return s_name;
+}
+
+std::string& Triv2::say_name(void) //сделать через темплейт для всех стратегий
+{
+    std::string& s_name = name;
+    return s_name;
+}
+
+std::string& Triv3::say_name(void) //сделать через темплейт для всех стратегий
+{
+    std::string& s_name = name;
+    return s_name;
 }
 
 int Triv1::choice(void)
