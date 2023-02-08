@@ -68,7 +68,7 @@ void competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, S
 	Strategy* S2 = SF2->create();
 	Strategy* S3 = SF3->create();
 
-	std::cout << S1->say_name() << " vs " << S2->say_name() << " vs " << S3->say_name() << std::endl;
+	std::cout << std::endl << S1->say_name() << " vs " << S2->say_name() << " vs " << S3->say_name() << std::endl;
 
 	for (int i = 0; i != steps; i++)
 	{
