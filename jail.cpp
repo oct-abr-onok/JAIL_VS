@@ -47,11 +47,9 @@ void detailed_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3)
 	S2->add_points(matrix[i][j][k].p2_res);
 	S3->add_points(matrix[i][j][k].p3_res);
 
-	std::cout << std::endl;
 	std::cout << "Choices: p1 - " << is << " p2 - " << js << " p3 - " << ks << std::endl;
 	std::cout << "Points for the current step: p1 - " << matrix[i][j][k].p1_res << " p2 - " << matrix[i][j][k].p2_res << " p3 - " << matrix[i][j][k].p3_res << std::endl;
-	std::cout << "Total points: p1 - " << S1->points_cnt() << " p2 - " << S2->points_cnt() << " p3 - " << S3->points_cnt() << std::endl
-		<< std::endl;
+	std::cout << "Total points: p1 - " << S1->points_cnt() << " p2 - " << S2->points_cnt() << " p3 - " << S3->points_cnt() << std::endl;
 }
 
 void fast_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3)
@@ -70,6 +68,8 @@ void competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, S
 	Strategy* S2 = SF2->create();
 	Strategy* S3 = SF3->create();
 
+	std::cout << S1->say_name() << " vs " << S2->say_name() << " vs " << S3->say_name() << std::endl;
+
 	for (int i = 0; i != steps; i++)
 	{
 		std::string command;
@@ -85,7 +85,8 @@ void competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, S
 			fast_step(matrix, S1, S2, S3);
 		}
 	}
-	std::cout << "Results: p1 - " << S1->points_cnt() << " p2 - " << S2->points_cnt() << " p3 - " << S3->points_cnt() << std::endl;
+	
+	std::cout << std::endl << "Results: p1 - " << S1->points_cnt() << " p2 - " << S2->points_cnt() << " p3 - " << S3->points_cnt() << std::endl;
 }
 
 void tournament(matrix*** matrix, std::vector<StrategyFactory*> s_factories, int steps)
@@ -101,7 +102,11 @@ void tournament(matrix*** matrix, std::vector<StrategyFactory*> s_factories, int
 			}
 		}
 	}
-	std::cout << "Final res:" << std::endl;
+	std::cout << "Final res: ";
+	for (int i = 0; i < s_factories.size(); i++)
+	{
+		std::cout << std::endl;
+	}
 }
 
 int main(int argc, char* argv[])
@@ -230,10 +235,6 @@ int main(int argc, char* argv[])
 		}
 		break;
 	}
-
-	Strategy* s = s_factories[0]->create();
-	std::cout << s->say_name() << std::endl;
-
 
 	return 0;
 }
