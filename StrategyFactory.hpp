@@ -50,24 +50,34 @@ public:
 class StrategyFactory
 {
 public:
+	virtual std::string& say_name(void);
 	virtual Strategy* create() const;
 };
 
 class Triv1Factory : public StrategyFactory
 {
+private:
+	std::string name = "s1";
 public:
+	std::string& say_name(void);
 	Strategy* create() const;
 };
 
 class Triv2Factory : public StrategyFactory
 {
+private:
+	std::string name = "s2";
 public:
+	std::string& say_name(void);
 	Strategy* create() const;
 };
 
 class Triv3Factory : public StrategyFactory
 {
+private:
+	std::string name = "s3";
 public:
+	std::string& say_name(void);
 	Strategy* create() const;
 };
 

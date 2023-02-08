@@ -62,7 +62,7 @@ Strategy *StrategyFactory::create() const
     return new Strategy;
 }
 
-Strategy *Triv1Factory::create() const
+Strategy *Triv1Factory::create() const //попробовать сделать через шаблон для всех
 {
     return new Triv1;
 }
@@ -75,6 +75,31 @@ Strategy *Triv2Factory::create() const //попробовать сделать �
 Strategy *Triv3Factory::create() const //попробовать сделать через шаблон для всех
 {
     return new Triv3;
+}
+
+std::string& Triv1Factory::say_name(void) //сделать через темплейт для всех фабрик
+{
+    std::string& s_name = name;
+    return s_name;
+}
+
+std::string& Triv2Factory::say_name(void) //сделать через темплейт для всех фабрик
+{
+    std::string& s_name = name;
+    return s_name;
+}
+
+std::string& Triv3Factory::say_name(void) //сделать через темплейт для всех фабрик
+{
+    std::string& s_name = name;
+    return s_name;
+}
+
+std::string& StrategyFactory::say_name(void)
+{
+    std::string name = "ja";
+    std::string& s_name = name;
+    return s_name;
 }
 
 //эксперименты

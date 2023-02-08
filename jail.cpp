@@ -62,7 +62,7 @@ void fast_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3)
 	S3->add_points(matrix[i][j][k].p3_res);
 }
 
-void competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, StrategyFactory* SF3, bool is_detailed, int steps = -1)
+int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, StrategyFactory* SF3, bool is_detailed, int steps = -1)
 {
 	Strategy* S1 = SF1->create();
 	Strategy* S2 = SF2->create();
@@ -85,28 +85,44 @@ void competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, S
 			fast_step(matrix, S1, S2, S3);
 		}
 	}
-	
+
 	std::cout << std::endl << "Results: p1 - " << S1->points_cnt() << " p2 - " << S2->points_cnt() << " p3 - " << S3->points_cnt() << std::endl;
+
+	int* res = new int[3];
+	res[0] = S1->points_cnt();
+	res[1] = S2->points_cnt();
+	res[2] = S3->points_cnt();
+	return res;
 }
 
 void tournament(matrix*** matrix, std::vector<StrategyFactory*> s_factories, int steps)
 {
+	int* res = new int[s_factories.size()];
+	for (int i = 0; i < s_factories.size(); i++)
+	{
+		res[i] = 0;
+	}
+
 	for (int i = 0; i < s_factories.size(); i++)
 	{
 		for (int j = i + 1; j < s_factories.size(); j++)
 		{
 			for (int k = j + 1; k < s_factories.size(); k++)
 			{
-				std::cout << "" << std::endl;
-				competition(matrix, s_factories[i], s_factories[j], s_factories[k], 0, steps);
+				std::cout << std::endl;
+				int* step_res = competition(matrix, s_factories[i], s_factories[j], s_factories[k], 0, steps);
+				res[i] += step_res[0];
+				res[j] += step_res[1];
+				res[k] += step_res[2];
 			}
 		}
 	}
-	std::cout << "Final res: ";
+	std::cout << std::endl << "Final res: ";
 	for (int i = 0; i < s_factories.size(); i++)
 	{
-		std::cout << std::endl;
+		std::cout << s_factories[i]->say_name() << " - " << res[i] << " ";
 	}
+	std::cout << std::endl;
 }
 
 int main(int argc, char* argv[])
@@ -219,8 +235,7 @@ int main(int argc, char* argv[])
 			std::cout << "Can't play fast competition without steps amount!" << std::endl;
 			break;
 		}
-		else
-			competition(matrix, s_factories[0], s_factories[1], s_factories[2], 0, steps);
+		competition(matrix, s_factories[0], s_factories[1], s_factories[2], 0, steps);
 		break;
 
 	case 2:
@@ -233,6 +248,7 @@ int main(int argc, char* argv[])
 			std::cout << "Can't play tournament without steps amount!" << std::endl;
 			break;
 		}
+		tournament(matrix, s_factories, steps);
 		break;
 	}
 
