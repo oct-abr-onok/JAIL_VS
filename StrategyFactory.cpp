@@ -4,8 +4,8 @@ void Strategy::write_frame(int x, int y, int z)
 {
     history.push_back(new int[3]);
     history.back()[0] = x;
-    history.back()[0] = y;
-    history.back()[0] = z;
+    history.back()[1] = y;
+    history.back()[2] = z;
 }
 
 int Strategy::read(int frame, int x)
@@ -54,6 +54,12 @@ std::string& Triv3::say_name(void) //сделать через темплейт 
     return s_name;
 }
 
+std::string& Strategy4::say_name(void) //сделать через темплейт для всех стратегий
+{
+    std::string& s_name = name;
+    return s_name;
+}
+
 int Triv1::choice(void)
 {
     return 1;
@@ -67,6 +73,23 @@ int Triv2::choice(void)
 int Triv3::choice(void)
 {
     return rand() % 2;
+}
+
+int Strategy4::choice(void)
+{
+    int sum = 0;
+    int res;
+
+    for (int i = 0; i < history.size(); i++)
+    {
+        for (int j = 1; j < 3; j++)
+        {
+            sum += history[i][j];
+        }
+    }
+
+    sum > history.size() ? res = 1 : res = 0; //выбирает 1 если другие игроки чаще сотрудничали и 0, если чаще предавали
+    return res;
 }
 
 //Фабрики стратегий:
@@ -90,6 +113,11 @@ Strategy *Triv3Factory::create() const //попробовать сделать �
     return new Triv3;
 }
 
+Strategy* Strategy4Factory::create() const //попробовать сделать через шаблон для всех
+{
+    return new Strategy4;
+}
+
 std::string& Triv1Factory::say_name(void) //сделать через темплейт для всех фабрик
 {
     std::string& s_name = name;
@@ -103,6 +131,12 @@ std::string& Triv2Factory::say_name(void) //сделать через темпл
 }
 
 std::string& Triv3Factory::say_name(void) //сделать через темплейт для всех фабрик
+{
+    std::string& s_name = name;
+    return s_name;
+}
+
+std::string& Strategy4Factory::say_name(void) //сделать через темплейт для всех фабрик
 {
     std::string& s_name = name;
     return s_name;

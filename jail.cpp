@@ -46,9 +46,9 @@ void detailed_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3)
 	S1->add_points(matrix[i][j][k].p1_res);
 	S2->add_points(matrix[i][j][k].p2_res);
 	S3->add_points(matrix[i][j][k].p3_res);
-	S1->write_frame(S1->choice(), S2->choice(), S3->choice());
-	S2->write_frame(S2->choice(), S1->choice(), S3->choice());
-	S3->write_frame(S3->choice(), S1->choice(), S2->choice());
+	S1->write_frame(i, j, k);
+	S2->write_frame(j, i, k);
+	S3->write_frame(k, i, j);
 
 	std::cout << "Choices: p1 - " << is << " p2 - " << js << " p3 - " << ks << std::endl;
 	std::cout << "Points for the current step: p1 - " << matrix[i][j][k].p1_res << " p2 - " << matrix[i][j][k].p2_res << " p3 - " << matrix[i][j][k].p3_res << std::endl;
@@ -63,9 +63,9 @@ void fast_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3)
 	S1->add_points(matrix[i][j][k].p1_res);
 	S2->add_points(matrix[i][j][k].p2_res);
 	S3->add_points(matrix[i][j][k].p3_res);
-	S1->write_frame(S1->choice(), S2->choice(), S3->choice());
-	S2->write_frame(S2->choice(), S1->choice(), S3->choice());
-	S3->write_frame(S3->choice(), S1->choice(), S2->choice());
+	S1->write_frame(i, j, k);
+	S2->write_frame(j, i, k);
+	S3->write_frame(k, i, j);
 }
 
 int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, StrategyFactory* SF3, bool is_detailed, int steps = -1)
@@ -224,8 +224,10 @@ int main(int argc, char* argv[])
 			s_factories.push_back(new Triv2Factory);
 		else if (strat_names[i] == "s3")
 			s_factories.push_back(new Triv3Factory);
+		else if (strat_names[i] == "s4")
+			s_factories.push_back(new Strategy4Factory);
 	}
-	std::vector<StrategyFactory*> &ss_factories = s_factories;
+	std::vector<StrategyFactory*>& ss_factories = s_factories;
 
 	switch (mode)
 	{

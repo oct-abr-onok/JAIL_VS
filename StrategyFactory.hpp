@@ -9,7 +9,7 @@
 //Стратегии:
 class Strategy
 {
-private:
+protected:
 	int points = 0;
 	std::vector<int*> history;
 	int read(int frame, int x);
@@ -91,5 +91,15 @@ public:
 	std::string& say_name(void);
 	Strategy* create() const;
 };
+
+class Strategy4Factory : public StrategyFactory
+{
+private:
+	std::string name = "s4";
+public:
+	std::string& say_name(void);
+	Strategy* create() const;
+};
+
 
 #endif /*SF_642*/
