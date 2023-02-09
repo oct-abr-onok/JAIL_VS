@@ -28,11 +28,11 @@ void read_matrix(matrix*** matrix, std::string filename)
 	fin.close();
 }
 
-void detailed_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3)
+void detailed_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3, std::string& config_dir)
 {
-	int i = S1->choice();
-	int j = S2->choice();
-	int k = S3->choice();
+	int i = S1->choice(config_dir);
+	int j = S2->choice(config_dir);
+	int k = S3->choice(config_dir);
 	char is, js, ks;
 	i == 0 ? is = 'D' : is = 'C';
 	j == 0 ? js = 'D' : js = 'C';
@@ -50,11 +50,11 @@ void detailed_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3)
 	std::cout << "Total points: p1 - " << S1->points_cnt() << " p2 - " << S2->points_cnt() << " p3 - " << S3->points_cnt() << std::endl;
 }
 
-void fast_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3)
+void fast_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3, std::string& config_dir)
 {
-	int i = S1->choice();
-	int j = S2->choice();
-	int k = S3->choice();
+	int i = S1->choice(config_dir);
+	int j = S2->choice(config_dir);
+	int k = S3->choice(config_dir);
 	S1->add_points(matrix[i][j][k].p1_res);
 	S2->add_points(matrix[i][j][k].p2_res);
 	S3->add_points(matrix[i][j][k].p3_res);
@@ -63,7 +63,7 @@ void fast_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3)
 	S3->write_frame(k, i, j);
 }
 
-int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, StrategyFactory* SF3, bool is_detailed, int steps)
+int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, StrategyFactory* SF3, bool is_detailed, std::string& config_dir, int steps)
 {
 	Strategy* S1 = SF1->create();
 	Strategy* S2 = SF2->create();
@@ -79,11 +79,11 @@ int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, S
 			std::getline(std::cin, command);
 			if (command == "quit")
 				break;
-			detailed_step(matrix, S1, S2, S3);
+			detailed_step(matrix, S1, S2, S3, config_dir);
 		}
 		else
 		{
-			fast_step(matrix, S1, S2, S3);
+			fast_step(matrix, S1, S2, S3, config_dir);
 		}
 	}
 
@@ -96,7 +96,7 @@ int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, S
 	return res;
 }
 
-void tournament(matrix*** matrix, std::vector<StrategyFactory*>& s_factories, int steps)
+void tournament(matrix*** matrix, std::vector<StrategyFactory*>& s_factories, std::string& config_dir, int steps)
 {
 	int* res = new int[s_factories.size()];
 	for (int i = 0; i < s_factories.size(); i++)
@@ -111,7 +111,7 @@ void tournament(matrix*** matrix, std::vector<StrategyFactory*>& s_factories, in
 			for (int k = j + 1; k < s_factories.size(); k++)
 			{
 				std::cout << std::endl;
-				int* step_res = competition(matrix, s_factories[i], s_factories[j], s_factories[k], 0, steps);
+				int* step_res = competition(matrix, s_factories[i], s_factories[j], s_factories[k], 0, config_dir, steps);
 				res[i] += step_res[0];
 				res[j] += step_res[1];
 				res[k] += step_res[2];
@@ -207,6 +207,7 @@ int main(int argc, char* argv[])
 	{
 		mode = 0;
 	}
+	std::string& config_dir = configs_dir_name;
 
 	read_matrix(matrix, matrix_file_name);
 
@@ -232,7 +233,7 @@ int main(int argc, char* argv[])
 			std::cout << "Can't play detailed mode with number of strategies different from 3!" << std::endl;
 			break;
 		}
-		competition(matrix, s_factories[0], s_factories[1], s_factories[2], 1, steps);
+		competition(matrix, s_factories[0], s_factories[1], s_factories[2], 1, config_dir, steps);
 		break;
 
 	case 1:
@@ -246,7 +247,7 @@ int main(int argc, char* argv[])
 			std::cout << "Can't play fast competition without steps amount!" << std::endl;
 			break;
 		}
-		competition(matrix, s_factories[0], s_factories[1], s_factories[2], 0, steps);
+		competition(matrix, s_factories[0], s_factories[1], s_factories[2], 0, config_dir,  steps);
 		break;
 
 	case 2:
@@ -259,7 +260,7 @@ int main(int argc, char* argv[])
 			std::cout << "Can't play tournament without steps amount!" << std::endl;
 			break;
 		}
-		tournament(matrix, ss_factories, steps);
+		tournament(matrix, ss_factories, config_dir ,steps);
 		break;
 	}
 

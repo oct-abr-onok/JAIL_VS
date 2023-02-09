@@ -12,6 +12,6 @@ struct matrix
 };
 
 void read_matrix(matrix*** matrix, std::string filename = "default_matrix.txt");
-int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, StrategyFactory* SF3, bool is_detailed, int steps = -1);
+int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, StrategyFactory* SF3, bool is_detailed, std::string& configs_dir, int steps = -1);
 
 #endif /*JAIL_642*/

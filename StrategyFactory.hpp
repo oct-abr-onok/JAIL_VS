@@ -17,7 +17,7 @@ public:
 	void write_frame(int x, int y, int z);
 	virtual std::string& say_name(void);
 	int points_cnt(void);
-	virtual int choice(void);
+	virtual int choice(std::string& config_dir);
 	void add_points(int cnt);
 };
 
@@ -27,7 +27,7 @@ private:
 	std::string name = "s1";
 public:
 	std::string& say_name(void);
-	int choice(void);
+	int choice(std::string& config_dir);
 };
 
 class Triv2 : public Strategy
@@ -36,7 +36,7 @@ private:
 	std::string name = "s2";
 public:
 	std::string& say_name(void);
-	int choice(void);
+	int choice(std::string& config_dir);
 };
 
 class Triv3 : public Strategy
@@ -45,7 +45,7 @@ private:
 	std::string name = "s3";
 public:
 	std::string& say_name(void);
-	int choice(void);
+	int choice(std::string& config_dir);
 };
 
 class Strategy4 : public Strategy
@@ -54,7 +54,7 @@ private:
 	std::string name = "s4";
 public:
 	std::string& say_name(void);
-	int choice(void);
+	int choice(std::string& config_dir);
 };
 
 //Фабрики стратегий:
