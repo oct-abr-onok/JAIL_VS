@@ -46,6 +46,9 @@ void detailed_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3)
 	S1->add_points(matrix[i][j][k].p1_res);
 	S2->add_points(matrix[i][j][k].p2_res);
 	S3->add_points(matrix[i][j][k].p3_res);
+	S1->write_frame(S1->choice(), S2->choice(), S3->choice());
+	S2->write_frame(S2->choice(), S1->choice(), S3->choice());
+	S3->write_frame(S3->choice(), S1->choice(), S2->choice());
 
 	std::cout << "Choices: p1 - " << is << " p2 - " << js << " p3 - " << ks << std::endl;
 	std::cout << "Points for the current step: p1 - " << matrix[i][j][k].p1_res << " p2 - " << matrix[i][j][k].p2_res << " p3 - " << matrix[i][j][k].p3_res << std::endl;
@@ -60,6 +63,9 @@ void fast_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3)
 	S1->add_points(matrix[i][j][k].p1_res);
 	S2->add_points(matrix[i][j][k].p2_res);
 	S3->add_points(matrix[i][j][k].p3_res);
+	S1->write_frame(S1->choice(), S2->choice(), S3->choice());
+	S2->write_frame(S2->choice(), S1->choice(), S3->choice());
+	S3->write_frame(S3->choice(), S1->choice(), S2->choice());
 }
 
 int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, StrategyFactory* SF3, bool is_detailed, int steps = -1)
@@ -95,7 +101,7 @@ int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, S
 	return res;
 }
 
-void tournament(matrix*** matrix, std::vector<StrategyFactory*> s_factories, int steps)
+void tournament(matrix*** matrix, std::vector<StrategyFactory*>& s_factories, int steps)
 {
 	int* res = new int[s_factories.size()];
 	for (int i = 0; i < s_factories.size(); i++)
@@ -147,12 +153,13 @@ int main(int argc, char* argv[])
 	}
 
 	// работа с аргументами коммандной строки
-	// jail.exe -mode=detailed --matrix=example_matrix.txt
+	// jail.exe -mode=detailed --matrix=example_matrix.txt --configs=configs
 	// jail.exe -mode=fast --steps=10
 	int mode = -1; // 0 - detailed, 1 - fast, 2 - tournament
 	std::string matrix_file_name = "default_matrix.txt";
 	int steps = -1;
 	std::vector<std::string> strat_names;
+	std::string configs_dir_name = "configs";
 
 	//парсер
 	for (int i = 1; i < argc; i++)
@@ -189,6 +196,12 @@ int main(int argc, char* argv[])
 			matrix_file_name = str.substr(9, std::string::npos);
 			continue;
 		}
+		command = str.substr(0, 10);
+		if (command == "--configs=")
+		{
+			configs_dir_name = str.substr(11, std::string::npos);
+			continue;
+		}
 		strat_names.insert(strat_names.end(), 1, command);
 	}
 	if (strat_names.size() > 3 && mode == -1)
@@ -212,6 +225,7 @@ int main(int argc, char* argv[])
 		else if (strat_names[i] == "s3")
 			s_factories.push_back(new Triv3Factory);
 	}
+	std::vector<StrategyFactory*> &ss_factories = s_factories;
 
 	switch (mode)
 	{
@@ -248,7 +262,7 @@ int main(int argc, char* argv[])
 			std::cout << "Can't play tournament without steps amount!" << std::endl;
 			break;
 		}
-		tournament(matrix, s_factories, steps);
+		tournament(matrix, ss_factories, steps);
 		break;
 	}
 

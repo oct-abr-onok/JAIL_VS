@@ -1,5 +1,18 @@
 #include "StrategyFactory.hpp"
 
+void Strategy::write_frame(int x, int y, int z)
+{
+    history.push_back(new int[3]);
+    history.back()[0] = x;
+    history.back()[0] = y;
+    history.back()[0] = z;
+}
+
+int Strategy::read(int frame, int x)
+{
+    return history[frame][x];
+}
+
 //Стратегии:
 int Strategy::points_cnt(void)
 {

@@ -11,8 +11,10 @@ class Strategy
 {
 private:
 	int points = 0;
-
+	std::vector<int*> history;
+	int read(int frame, int x);
 public:
+	void write_frame(int x, int y, int z);
 	virtual std::string& say_name(void);
 	int points_cnt(void);
 	virtual int choice(void);
@@ -41,6 +43,15 @@ class Triv3 : public Strategy
 {
 private:
 	std::string name = "s3";
+public:
+	std::string& say_name(void);
+	int choice(void);
+};
+
+class Strategy4 : public Strategy
+{
+private:
+	std::string name = "s4";
 public:
 	std::string& say_name(void);
 	int choice(void);
