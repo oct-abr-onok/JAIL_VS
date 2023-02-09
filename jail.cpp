@@ -3,12 +3,7 @@
 #include "unit_tests.hpp"
 #define TEST_72
 
-struct matrix
-{
-	int p1_res, p2_res, p3_res;
-};
-
-void read_matrix(matrix*** matrix, std::string filename = "default_matrix.txt")
+void read_matrix(matrix*** matrix, std::string filename)
 {
 	std::ifstream fin(filename);
 	std::string buf;
@@ -68,7 +63,7 @@ void fast_step(matrix*** matrix, Strategy* S1, Strategy* S2, Strategy* S3)
 	S3->write_frame(k, i, j);
 }
 
-int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, StrategyFactory* SF3, bool is_detailed, int steps = -1)
+int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, StrategyFactory* SF3, bool is_detailed, int steps)
 {
 	Strategy* S1 = SF1->create();
 	Strategy* S2 = SF2->create();
