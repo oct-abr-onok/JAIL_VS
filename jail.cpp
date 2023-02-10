@@ -222,6 +222,10 @@ int main(int argc, char* argv[])
 			s_factories.push_back(new Triv3Factory);
 		else if (strat_names[i] == "s4")
 			s_factories.push_back(new Strategy4Factory);
+		else if (strat_names[i] == "s5")
+			s_factories.push_back(new Strategy5Factory);
+		else if (strat_names[i] == "s6")
+			s_factories.push_back(new Strategy6Factory);
 	}
 	std::vector<StrategyFactory*>& ss_factories = s_factories;
 

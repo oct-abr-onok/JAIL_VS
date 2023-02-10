@@ -57,6 +57,24 @@ public:
 	int choice(std::string& config_dir);
 };
 
+class Strategy5 : public Strategy
+{
+private:
+	std::string name = "s5";
+public:
+	std::string& say_name(void);
+	int choice(std::string& config_dir);
+};
+
+class Strategy6 : public Strategy
+{
+private:
+	std::string name = "s6";
+public:
+	std::string& say_name(void);
+	int choice(std::string& config_dir);
+};
+
 //Фабрики стратегий:
 class StrategyFactory
 {
@@ -101,5 +119,22 @@ public:
 	Strategy* create() const;
 };
 
+class Strategy5Factory : public StrategyFactory
+{
+private:
+	std::string name = "s5";
+public:
+	std::string& say_name(void);
+	Strategy* create() const;
+};
+
+class Strategy6Factory : public StrategyFactory
+{
+private:
+	std::string name = "s6";
+public:
+	std::string& say_name(void);
+	Strategy* create() const;
+};
 
 #endif /*SF_642*/

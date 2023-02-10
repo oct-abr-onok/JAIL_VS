@@ -60,6 +60,19 @@ std::string& Strategy4::say_name(void) //сделать через темпле�
 	return s_name;
 }
 
+std::string& Strategy5::say_name(void) //сделать через темплейт для всех стратегий
+{
+	std::string& s_name = name;
+	return s_name;
+}
+
+std::string& Strategy6::say_name(void) //сделать через темплейт для всех стратегий
+{
+	std::string& s_name = name;
+	return s_name;
+}
+
+
 int Triv1::choice(std::string& config_dir)
 {
 	return 1;
@@ -97,6 +110,55 @@ int Strategy4::choice(std::string& config_dir) //сделать параметр
 	return res;
 }
 
+int Strategy5::choice(std::string& config_dir) 
+{
+	int sum = 0, cnt = 0;
+	int res;
+
+	std::ifstream fin(config_dir + "/s5.txt");
+	std::string buf;
+	std::getline(fin, buf);
+	int param = std::stoi(buf);
+
+	for (int i = 0; i < history.size(); i++)
+	{
+		for (int j = 1; j < 3; j++)
+		{
+			if (history[0])
+			{
+				sum += history[i][j];
+				cnt += 1;
+			}
+		}
+	}
+
+	if (history.size() == 0)
+	{
+		return 1;
+	}
+
+	sum > cnt * param ? res = 1 : res = 0; //оценивает, сколько было сотрудничеств при своём сотрудничестве, и в зависимости от этого делает выбор
+	return res;
+}
+
+int Strategy6::choice(std::string& config_dir) 
+{
+	int res;
+
+	std::ifstream fin(config_dir + "/s6.txt");
+	std::string buf;
+	std::getline(fin, buf);
+	int param = std::stoi(buf);
+	
+	if (history.size() == 0)
+	{
+		return 0;
+	}
+
+	history.back()[1] + history.back()[2] > param ? res = 1 : res = 0; //оценивает количество сотрудничеств за последний ход, сравнивает с параметром из файла
+	return res;
+}
+
 //Фабрики стратегий:
 Strategy* StrategyFactory::create() const
 {
@@ -123,6 +185,17 @@ Strategy* Strategy4Factory::create() const //попробовать сделат
 	return new Strategy4;
 }
 
+Strategy* Strategy5Factory::create() const //попробовать сделать через шаблон для всех
+{
+	return new Strategy5;
+}
+
+Strategy* Strategy6Factory::create() const //попробовать сделать через шаблон для всех
+{
+	return new Strategy6;
+}
+
+
 std::string& Triv1Factory::say_name(void) //сделать через темплейт для всех фабрик
 {
 	std::string& s_name = name;
@@ -142,6 +215,18 @@ std::string& Triv3Factory::say_name(void) //сделать через темпл
 }
 
 std::string& Strategy4Factory::say_name(void) //сделать через темплейт для всех фабрик
+{
+	std::string& s_name = name;
+	return s_name;
+}
+
+std::string& Strategy5Factory::say_name(void) //сделать через темплейт для всех фабрик
+{
+	std::string& s_name = name;
+	return s_name;
+}
+
+std::string& Strategy6Factory::say_name(void) //сделать через темплейт для всех фабрик
 {
 	std::string& s_name = name;
 	return s_name;
