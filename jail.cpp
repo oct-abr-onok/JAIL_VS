@@ -71,7 +71,7 @@ int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, S
 
 	std::cout << std::endl << S1->say_name() << " vs " << S2->say_name() << " vs " << S3->say_name() << std::endl;
 
-	for (int i = 0; i != steps; i++)
+	for (int i = 0; i != steps; i++) //шаги соревнования в зависимости от режима
 	{
 		std::string command;
 		if (is_detailed)
@@ -89,6 +89,7 @@ int* competition(matrix*** matrix, StrategyFactory* SF1, StrategyFactory* SF2, S
 
 	std::cout << std::endl << "Results: p1 - " << S1->points_cnt() << " p2 - " << S2->points_cnt() << " p3 - " << S3->points_cnt() << std::endl;
 
+	//результаты
 	int* res = new int[3];
 	res[0] = S1->points_cnt();
 	res[1] = S2->points_cnt();
@@ -104,6 +105,7 @@ void tournament(matrix*** matrix, std::vector<StrategyFactory*>& s_factories, st
 		res[i] = 0;
 	}
 
+	//перебор всех неповторяющихся троек
 	for (int i = 0; i < s_factories.size(); i++)
 	{
 		for (int j = i + 1; j < s_factories.size(); j++)
@@ -118,7 +120,7 @@ void tournament(matrix*** matrix, std::vector<StrategyFactory*>& s_factories, st
 			}
 		}
 	}
-	std::cout << std::endl << "Final res: ";
+	std::cout << std::endl << "Final res: "; //вывод результатов
 	for (int i = 0; i < s_factories.size(); i++)
 	{
 		std::cout << s_factories[i]->say_name() << " - " << res[i] << " ";
@@ -128,7 +130,7 @@ void tournament(matrix*** matrix, std::vector<StrategyFactory*>& s_factories, st
 
 int main(int argc, char* argv[])
 {
-
+	//тесты
 #ifdef TEST_72
 	testing::InitGoogleTest();
 	RUN_ALL_TESTS();
@@ -156,7 +158,7 @@ int main(int argc, char* argv[])
 	std::vector<std::string> strat_names;
 	std::string configs_dir_name = "configs";
 
-	//парсер
+	//парсер аргументов строки
 	for (int i = 1; i < argc; i++)
 	{
 		std::string str = std::string(argv[i]);
@@ -197,9 +199,9 @@ int main(int argc, char* argv[])
 			configs_dir_name = str.substr(10, std::string::npos);
 			continue;
 		}
-		strat_names.insert(strat_names.end(), 1, command);
+		strat_names.insert(strat_names.end(), 1, command); //запись имён стратегий
 	}
-	if (strat_names.size() > 3 && mode == -1)
+	if (strat_names.size() > 3 && mode == -1) //определение режима по умолчанию
 	{
 		mode = 2;
 	}
@@ -209,8 +211,9 @@ int main(int argc, char* argv[])
 	}
 	std::string& config_dir = configs_dir_name;
 
-	read_matrix(matrix, matrix_file_name);
+	read_matrix(matrix, matrix_file_name);//чтение матрицы
 
+	//создание фабрик играющих стратегий
 	std::vector<StrategyFactory*> s_factories;
 	for (int i = 0; i < strat_names.size(); i++)
 	{
@@ -229,6 +232,7 @@ int main(int argc, char* argv[])
 	}
 	std::vector<StrategyFactory*>& ss_factories = s_factories;
 
+	//непосредственно игра
 	switch (mode)
 	{
 	default:
@@ -251,7 +255,7 @@ int main(int argc, char* argv[])
 			std::cout << "Can't play fast competition without steps amount!" << std::endl;
 			break;
 		}
-		competition(matrix, s_factories[0], s_factories[1], s_factories[2], 0, config_dir,  steps);
+		competition(matrix, s_factories[0], s_factories[1], s_factories[2], 0, config_dir, steps);
 		break;
 
 	case 2:
@@ -264,7 +268,7 @@ int main(int argc, char* argv[])
 			std::cout << "Can't play tournament without steps amount!" << std::endl;
 			break;
 		}
-		tournament(matrix, ss_factories, config_dir ,steps);
+		tournament(matrix, ss_factories, config_dir, steps);
 		break;
 	}
 
