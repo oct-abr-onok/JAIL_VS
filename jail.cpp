@@ -194,7 +194,7 @@ int main(int argc, char* argv[])
 		command = str.substr(0, 10);
 		if (command == "--configs=")
 		{
-			configs_dir_name = str.substr(11, std::string::npos);
+			configs_dir_name = str.substr(10, std::string::npos);
 			continue;
 		}
 		strat_names.insert(strat_names.end(), 1, command);

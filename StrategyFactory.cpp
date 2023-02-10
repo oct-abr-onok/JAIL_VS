@@ -122,12 +122,12 @@ int Strategy5::choice(std::string& config_dir)
 
 	for (int i = 0; i < history.size(); i++)
 	{
+		cnt += 1;
 		for (int j = 1; j < 3; j++)
 		{
 			if (history[0])
 			{
 				sum += history[i][j];
-				cnt += 1;
 			}
 		}
 	}
